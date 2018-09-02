@@ -1,0 +1,21 @@
+{
+    "python.pythonPath": "/usr/bin/python",
+    "cSpell.enabledLanguageIds": [
+        "cpp",
+        "csharp",
+        "go",
+        "handlebars",
+        "javascript",
+        "javascriptreact",
+        "json",
+        "latex",
+        "markdown",
+        "php",
+        "plaintext",
+        "restructuredtext",
+        "text",
+        "typescript",
+        "typescriptreact",
+        "yml"
+    ]
+}
