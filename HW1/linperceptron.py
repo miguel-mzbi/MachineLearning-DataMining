@@ -13,6 +13,8 @@ def run(L,X,y):
     for it in range(1, L +1):
         for t in range(n):
             if (y[t]*(np.dot(X[t], theta))) <= 0:
-                t = y[t]*X[t]
-                theta = np.transpose(np.transpose(theta) + t)
+                temp = y[t]*X[t]
+                temp = np.reshape(temp, (d, 1))
+                #theta = np.transpose(np.transpose(theta) + temp)
+                theta = theta + temp
     return theta

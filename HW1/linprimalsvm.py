@@ -16,4 +16,5 @@ def run(X, y):
             A[i][j] = -y[i]*X[i][j]
     b = np.full(n, -1)
     theta = np.array(co.solvers.qp(co.matrix(H,tc='d'), co.matrix(f,tc='d'), co.matrix(A,tc='d'), co.matrix(b,tc='d'))['x'])
+
     return theta
