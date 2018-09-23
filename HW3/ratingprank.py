@@ -23,9 +23,7 @@ def run(L,k,X,y):
         b[l] = l
     
     for iter in range(1, L+1):
-        print "iter =", iter , "----------------"
         for t in range(0, n):
-            print "t =", t, " --------"
             E = set()
             for l in range(k-1):
                 condition = stl(y[t], l) * (np.dot(X[t], theta) - b[l])
@@ -41,22 +39,3 @@ def run(L,k,X,y):
                 for l in E:
                     b[l] -= stl(y[t], l)
     return (theta, b)
-
-def main():
-    import createsepratingdata
-    import ratingpred
-    L = 1000
-    k = 5
-    n = 20
-    d = 10
-    X, y = createsepratingdata.run(n, d, k)
-    theta, b = run(L, k, X, y)
-    
-    for i in range(n):
-        if y[i] == ratingpred.run(k,theta,b,X[i]):
-            print y[i], ratingpred.run(k,theta,b,X[i]), True
-        else:
-            print y[i], ratingpred.run(k,theta,b,X[i]), False
-
-if __name__ == '__main__':
-    main()

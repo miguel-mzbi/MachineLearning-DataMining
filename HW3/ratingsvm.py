@@ -7,66 +7,80 @@
 #         vector b of k-1 rows, 1 column
 import cvxopt as co
 import numpy as np
+
 def sil(yi, l):
-    if yi <= l+1:
+    if yi <= (l+1):
         return -1
     else:
         return 1
 
 def run(k,X,y):
-    print "X:", X
     n, d = X.shape
-    H = np.zeros((d+k-1, d+k-1))
-    for i in range(d+k-1):
-        for j in range(d+k-1):
-            if i < d and j < d:
-                if i == j:
-                    H[i][j] = 1
+    print X
+    print y
+
+    # H
+    H = np.block([
+        [np.identity(d), np.zeros((d,k-1))],
+        [np.zeros((k-1, d)), np.zeros((k-1,k-1))]
+    ])
     print "H:\n", H
+    
+    # f
     f = np.zeros((d+k-1, 1))
     print "f:\n", f
-    A = np.zeros((n*(k-1)+k-2, d+k-1))
-    for m in range(1, n+1):
-        for i in range((m-1)*(k-1), m*(k-1)):
-            for j in range(d):
-                A[i][j] = -1*sil(m-1, i%(k-1))*X[m-1][j]
-    for m in range(1, n+1):
-        for i in range((m-1)*(k-1), m*(k-1)):
-            for j in range(d, d+k-1):
-                if j-d == i%(k-1):
-                    A[i][j] = sil(m-1, j-d)
-    for i in range(n*(k-1), n*(k-1)+k-2):
-            for j in range(d, d+k-1):
-                if j-d == i%(k-1):
-                    A[i][j] = 1
-                    A[i][j+1] = -1
+    
+    # A
+    for m in range(0, n):
+        a0 = np.zeros((k-1, d))
+        for i in range(0, k-1):
+            for j in range(0, d):
+                a0[i][j] = -sil(m, i)*X[m][j]
+        if m == 0:
+            x0 = a0
+        else:
+            x0 = np.block([
+                [x0],
+                [a0]
+            ])
+    x1 = []
+    for m in range(0, n):
+        a1 = np.zeros((k-1, k-1))
+        for i in range(0, k-1):
+            for j in range(0, k-1):
+                if j == i:
+                    a1[i][j] = sil(m, j)
+        if m == 0:
+            x1 = a1
+        else:
+            x1 = np.block([
+                [x1],
+                [a1]
+            ])
+    x2 = np.zeros((k-2, k-1))
+    for i in range(0, k-2):
+        for j in range(0, k-1):
+            if j == i:
+                x2[i][j] = 1
+                x2[i][j+1] = -1
+    A = np.block([
+        [x0, x1],
+        [np.zeros((k-2, d)), x2]
+    ])
     print "A:\n", A
-    c = np.zeros((n*(k-1)+k-2, 1))
-    for i in range(n*(k-1)):
-        c[i][0] = -1
+    
+    # c
+    c = np.block([
+        [np.full((n*(k-1),1), -1)],
+        [np.zeros((k-2, 1))]
+    ])
     print "c:\n", c
+
     z = np.array(co.solvers.qp(co.matrix(H,tc='d'),co.matrix(f,tc='d'),co.matrix(A,tc='d'),co.matrix(c,tc='d'))['x'])
+    print z
     z = np.split(z.flatten(), [d])
     theta = np.reshape(z[0], (d,1))
     b = np.reshape(z[1], (k-1,1))
     print theta
     print b
     return (theta, b)
-
-def main():
-    import createsepratingdata
-    import ratingpred
-    k = 4
-    n = 50
-    d = 3
-    X, y = createsepratingdata.run(n, d, k)
-    theta, b = run(k, X, y)
-    
-    for i in range(n):
-        if y[i] == ratingpred.run(k,theta,b,X[i]):
-            print y[i], ratingpred.run(k,theta,b,X[i]), True
-        else:
-            print y[i], ratingpred.run(k,theta,b,X[i]), False
-
-if __name__ == '__main__':
-    main()
