@@ -34,6 +34,7 @@ def run(L,k,X,y):
                 for l in E:
                     summ += stl(y[t], l)
                 temp = X[t]
+                
                 theta += summ*np.reshape(temp, (d, 1))
 
                 for l in E:

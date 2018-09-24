@@ -3,11 +3,16 @@ def main():
     import ratingpred
     import ratingprank
     import ratingsvm
+    import numpy as np
     L = 300
-    n = 10
-    d = 3
+    n = 3
+    d = 2
     k = 3
     X, y = createsepratingdata.run(n, d, k)
+
+    print X
+    print y
+
     thetaA, bA = ratingprank.run(L, k, X, y)
     thetaB, bB = ratingsvm.run(k, X, y)
     
