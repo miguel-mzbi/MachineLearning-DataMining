@@ -6,7 +6,6 @@
 import numpy as np
 def run(k, theta, b, x):
     thetaX = np.dot(x, theta)
-    
     for l in range(0, k):
         if l == 0:
             if thetaX <= b[l]:

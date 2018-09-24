@@ -22,7 +22,7 @@ def run(L,k,X,y):
     for l in range(k-1):
         b[l] = l
     
-    for iter in range(1, L+1):
+    for _ in range(1, L+1):
         for t in range(0, n):
             E = set()
             for l in range(k-1):
@@ -33,9 +33,8 @@ def run(L,k,X,y):
                 summ = 0
                 for l in E:
                     summ += stl(y[t], l)
-                temp = X[t]
                 
-                theta += summ*np.reshape(temp, (d, 1))
+                theta += summ*np.reshape(X[t], (d, 1))
 
                 for l in E:
                     b[l] -= stl(y[t], l)

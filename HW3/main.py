@@ -4,16 +4,20 @@ def main():
     import ratingprank
     import ratingsvm
     import numpy as np
-    L = 300
-    n = 3
-    d = 2
-    k = 3
+    L = 400
+    n = 10
+    d = 6
+    k = 6
     X, y = createsepratingdata.run(n, d, k)
 
     print X
     print y
 
     thetaA, bA = ratingprank.run(L, k, X, y)
+    print "----------------"
+    print thetaA
+    print bA
+
     thetaB, bB = ratingsvm.run(k, X, y)
     
     print "y\tPRank\tSVM"
