@@ -2,6 +2,7 @@ def main():
     import createlinregdata
     import greedysubset
     import forwardfitting
+    import myopicfitting
     import time
 
     n = 10
@@ -18,12 +19,23 @@ def main():
     print "greedyS: ", greedyS
     print "greedyTheta: ", greedyTheta
     
+    print "\n~~~~~~~~~~~~~~~~~~~~~\n"
+
     start = time.time()
     forwardS, forwardTheta = forwardfitting.run(F, X, y)
     end = time.time()
     print "Elapsed time: ", end - start
     print "forwardS: ", forwardS
     print "forwardTheta: ", forwardTheta
+    
+    print "\n~~~~~~~~~~~~~~~~~~~~~\n"
+
+    start = time.time()
+    myopicS, myopicTheta = myopicfitting.run(F, X, y)
+    end = time.time()
+    print "Elapsed time: ", end - start
+    print "myopicS: ", myopicS
+    print "myopicTheta: ", myopicTheta
 
 if __name__ == '__main__':
     main()

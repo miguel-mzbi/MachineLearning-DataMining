@@ -12,6 +12,7 @@ import numpy as np
 #             and so on and so forth
 def run(F,X,y):
     S = set()
+    finalS = []
     n, d = X.shape
     completeSet = set(range(d))
     
@@ -38,11 +39,12 @@ def run(F,X,y):
         jHat, _ = min(J.items(), key=lambda x:x[1])
         # Adds J to final set S
         S.add(jHat)
+        finalS.append(jHat)
     # Build matrix X with only features in final set S
     # This will let us do the linear regression with ony those features
     tempX = np.delete(X,list(completeSet-S),1)
     # Compute linear regresion for final set
     thetaS =  linreg.run(tempX, y)
     # Change S format to numpy vector
-    S = np.reshape(list(S), (F, 1))
+    S = np.reshape(finalS, (F, 1))
     return (S, thetaS)

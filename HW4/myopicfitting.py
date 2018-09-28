@@ -1,3 +1,5 @@
+import numpy as np
+import linreg
 # Input: number of features F
 #        numpy matrix X of features, with n rows (samples), d columns (features)
 #            X[i,j] is the j-th feature of the i-th sample
@@ -9,5 +11,47 @@
 #             thetaS[1] corresponds to the weight of feature S[1]
 #             and so on and so forth
 def run(F,X,y):
-    # Your code goes here
+    n, d = X.shape
+    S = set()
+    finalS = []
+    completeSet = set(range(d))
+    thetaS = np.array([])
+    z = np.zeros((n, 1))
+    for _ in range(F):
+        # Build X matrix for only the features in set S => delete values from complete set - S
+        XS = np.delete(X,list(completeSet-S),1)
+        for t in range(n):
+            dot = np.dot(XS[t], thetaS)
+            z[t] = y[t] - dot
+        
+        J = {}
+        for j in completeSet-S:
+            summ = 0
+            for t in range(n):
+                summ += (z[t]*X[t][j])
+            # Store minimization for this current set
+            J[j] = -summ[0]
+            #print "j candidate", j, "->", -summ[0]
+        
+        # Obtain j with bext minimization (And its corresponding thetaJ)
+        jHat, _ = max(J.items(), key=lambda x:x[1])
+        # print "MAX ", jHat
+        # Compute weight for selected jHat
+        thetaJ = linreg.run(np.reshape(X[:,jHat], (n,1)), z)
+        # print "maxTheta", thetaJ
+        # Constructs final thetaS
+        if len(thetaS) == 0:
+            thetaS = thetaJ
+        else:
+            thetaS = np.block([
+                [thetaS],
+                [thetaJ]
+            ])
+        #print "thetaS", thetaS
+        # Adds J to final set S
+        S.add(jHat)
+        finalS.append(jHat)
+        
+    # Reshape set as numpy list
+    S = np.reshape(finalS, (F, 1))
     return (S, thetaS)

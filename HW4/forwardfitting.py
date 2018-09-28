@@ -13,6 +13,7 @@ import linreg
 def run(F,X,y):
     n, d = X.shape
     S = set()
+    finalS = []
     completeSet = set(range(d))
     thetaS = np.array([])
     z = np.zeros((n, 1))
@@ -39,8 +40,8 @@ def run(F,X,y):
         
         # Obtain j with bext minimization (And its corresponding thetaJ)
         jHat, (_, thetaJ) = min(J.items(), key=lambda x:x[1][0])
-        #print "MAX", thetaJ
-        
+        # print "MIN", jHat
+        # print "minTheta", thetaJ
         # Constructs final thetaS
         if len(thetaS) == 0:
             thetaS = thetaJ
@@ -52,7 +53,8 @@ def run(F,X,y):
         #print "thetaS", thetaS
         # Adds J to final set S
         S.add(jHat)
+        finalS.append(jHat)
         
     # Reshape set as numpy list
-    S = np.reshape(list(S), (F, 1))
+    S = np.reshape(finalS, (F, 1))
     return (S, thetaS)
