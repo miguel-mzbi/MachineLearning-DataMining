@@ -28,7 +28,7 @@ def run(F,X,y):
             # Obtain beta vector (argmin)
             thetaSJ =  linreg.run(tempX, y)
             # Build summatory for the beta vector
-            # This will result in min, as the veta vector is the argmin
+            # This will result in min, as the beta vector is the argmin
             summ = 0
             for t in range(n):
                 summ += (y[t] - np.dot(tempX[t], thetaSJ))**2
