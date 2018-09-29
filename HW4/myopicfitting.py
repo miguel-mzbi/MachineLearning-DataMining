@@ -30,7 +30,7 @@ def run(F,X,y):
             for t in range(n):
                 summ += (z[t]*X[t][j])
             # Store minimization for this current set
-            J[j] = -summ[0]
+            J[j] = abs(-summ[0])
             #print "j candidate", j, "->", -summ[0]
         
         # Obtain j with bext minimization (And its corresponding thetaJ)
