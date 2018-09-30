@@ -11,7 +11,7 @@ import numpy as np
 #             thetaS[1] corresponds to the weight of feature S[1]
 #             and so on and so forth
 def run(F,X,y):
-    S = set()
+    setS = set()
     finalS = []
     n, d = X.shape
     completeSet = set(range(d))
@@ -19,9 +19,9 @@ def run(F,X,y):
     for f in range(1, F+1):
         
         J = {}
-        for j in completeSet-S:
+        for j in completeSet-setS:
             # Current set to test: S with j
-            SJ = S.copy()
+            SJ = setS.copy()
             SJ.add(j)
             # Build matrix X with only features in set SJ
             # This will let us do the linear regression with ony those features
@@ -38,11 +38,11 @@ def run(F,X,y):
         # Obtain j with bext minimization
         jHat, _ = min(J.items(), key=lambda x:x[1])
         # Adds J to final set S
-        S.add(jHat)
+        setS.add(jHat)
         finalS.append(jHat)
     # Build matrix X with only features in final set S
     # This will let us do the linear regression with ony those features
-    tempX = np.delete(X,list(completeSet-S),1)
+    tempX = np.delete(X,list(completeSet-setS),1)
     # Compute linear regresion for final set
     thetaS =  linreg.run(tempX, y)
     # Change S format to numpy vector
