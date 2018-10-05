@@ -4,9 +4,12 @@ def main():
     import createlinregdata
     import adaboost
     import adapred
-    n = 20
+    import kfoldcv
+    import bootstrapping
+    n = 10
     d = 2
     L = 10
+    k = 5
 
     sepX, sepy = createsepdata.run(n, d)
     # print "sepX", sepX
@@ -30,6 +33,8 @@ def main():
     linX, liny = createlinregdata.run(n, d)
     # print "sepX", linX
     # print "sepy", liny
+    kfoldZ = kfoldcv.run(k, linX, liny)
+    print kfoldZ
 
 if __name__ == '__main__':
     main()
