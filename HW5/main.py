@@ -10,6 +10,7 @@ def main():
     d = 2
     L = 10
     k = 5
+    B = 5
 
     sepX, sepy = createsepdata.run(n, d)
     # print "sepX", sepX
@@ -35,6 +36,8 @@ def main():
     # print "sepy", liny
     kfoldZ = kfoldcv.run(k, linX, liny)
     print kfoldZ
+    bootZ= bootstrapping.run(B, linX, liny)
+    print bootZ
 
 if __name__ == '__main__':
     main()
