@@ -5,6 +5,51 @@
 #            y[i] is the label (+1 or -1) of the i-th sample
 # Output: numpy vector alpha of weights, with L rows, 1 column
 #         numpy vector theta of feature indices, with L rows, 1 column
+import numpy as np
+
+def sgn(z):
+    if z > 0:
+        return 1
+    else:
+        return -1
+
 def run(L,X,y):
-    # Your code goes here
+    n, d = X.shape
+    W = []
+    theta = [0]*L
+    alpha = [0]*L
+    # Set up uniform weights
+    for t in range(n):
+        W.append(1.0/n)
+    # Get L features
+    for r in range(L):
+        epsilon = np.Inf
+        # Iterate all features in all samples to find best classifier according to W
+        for j in range(d):
+            summ = 0
+            for t in range(n):
+                summ += W[t]*y[t]*sgn(X[t][j])
+            summ = -1*summ
+            # Store error (Epsilon) and the feature that provided that error
+            # If error is smaller than the current smaller error
+            if(summ < epsilon):
+                epsilon = summ
+                theta[r] = j
+        # Get rid of cases close to infinity
+        epsilon = np.min([0.99, np.max([-0.99, epsilon])])
+        # Compute logodds of epsilon
+        alpha[r] = 0.5*np.log((1.0-epsilon)/(1.0+epsilon))
+        # Adjust weights
+        for t in range(n):
+            j = theta[r]
+            W[t] = W[t]*np.exp(-1*alpha[r]*y[t]*sgn(X[t][j]))
+        # Normalize weights
+        weightSum = 0
+        for t in range(n):
+            weightSum += W[t]
+        for t in range(n):
+            W[t] = W[t]/weightSum
+
+    alpha = np.reshape(alpha, (L, 1))
+    theta = np.reshape(theta, (L, 1))
     return (alpha, theta)
