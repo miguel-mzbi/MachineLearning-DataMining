@@ -5,9 +5,9 @@ def main():
     import myopicfitting
     import time
 
-    n = 30
-    d = 20
-    F = 5
+    n = 10
+    d = 5
+    F = 4
 
     X, y = createlinregdata.run(n, d)
     # print "X: ", X

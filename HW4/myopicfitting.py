@@ -21,6 +21,7 @@ def run(F,X,y):
         # Build X matrix for only the features in set S => delete values from complete set - S
         XS = np.delete(X,list(completeSet-S),1)
         for t in range(n):
+
             dot = np.dot(XS[t], thetaS)
             z[t] = y[t] - dot
         
