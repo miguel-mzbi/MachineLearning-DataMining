@@ -15,15 +15,16 @@ def sgn(z):
 
 def run(L,X,y):
     n, d = X.shape
-    W = []
+    W = [0]*n
     theta = [0]*L
     alpha = [0]*L
     # Set up uniform weights
     for t in range(n):
-        W.append(1.0/n)
+        W[t] = 1.0/n
     # Get L features
     for r in range(L):
-        epsilon = np.Inf
+        epsilon = 0
+        first = True
         # Iterate all features in all samples to find best classifier according to W
         for j in range(d):
             summ = 0
@@ -32,9 +33,12 @@ def run(L,X,y):
             summ = -1*summ
             # Store error (Epsilon) and the feature that provided that error
             # If error is smaller than the current smaller error
-            if(summ < epsilon):
+            if(summ < epsilon or first):
+                first = False
                 epsilon = summ
                 theta[r] = j
+                print "j", j
+                print "theta", theta
         # Get rid of cases close to infinity
         epsilon = np.min([0.99, np.max([-0.99, epsilon])])
         # Compute logodds of epsilon

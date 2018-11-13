@@ -8,6 +8,7 @@ def main():
     d = 5
 
     X, y = createsepdata.run(n, d)
+    print X, y
 
     alphaA = kerperceptron.run(L, X, y)
     alphaB = kerdualsvm.run(X, y)

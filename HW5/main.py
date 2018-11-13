@@ -7,7 +7,7 @@ def main():
     import kfoldcv
     import bootstrapping
     n = 10
-    d = 2
+    d = 3
     L = 10
     k = 5
     B = 5
@@ -19,8 +19,8 @@ def main():
     print "\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n"
 
     adaBoostAlpha, adaBoostTheta = adaboost.run(L, sepX, sepy)
-    # print adaBoostAlpha
-    # print adaBoostTheta
+    print adaBoostAlpha
+    print adaBoostTheta
     correct = 0
     for i in range(n):
         pred = adapred.run(adaBoostAlpha, adaBoostTheta, np.reshape(sepX[i], (d, 1)))
